@@ -1,0 +1,16 @@
+{
+  "name": "ytmovies",
+  "version": "1.0.0",
+  "description": "A YouTube clone with custom branding",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "helmet": "^8.1.0"
+  },
+  "devDependencies": {
+    "firebase-tools": "^14.1.0"
+  }
+}

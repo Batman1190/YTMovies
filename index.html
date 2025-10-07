@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover, shrink-to-fit=no">
+    <!-- Desktop View Toggle -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="YTMovies">
+    <meta name="theme-color" content="#2d1b69">
+    <meta name="msapplication-TileColor" content="#2d1b69">
+    <meta name="msapplication-navbutton-color" content="#2d1b69">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="YTMovies - A modern YouTube experience with a dark theme. Watch trending videos, search for content, and enjoy a seamless video watching experience.">
+    <meta name="keywords" content="YouTube, video platform, dark theme, video streaming, YTMovies">
+    <meta name="author" content="YTMovies">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="YTMovies - Modern Video Experience">
+    <meta property="og:description" content="Watch your favorite YouTube content with a sleek dark theme interface. Trending videos, search functionality, and more.">
+    <meta property="og:image" content="https://ramdor.space/images/logo.png">
+    <meta property="og:url" content="https://ramdor.space">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.google.com https://*.doubleclick.net https://*.chatango.com http://localhost:* ws://localhost:*; frame-src 'self' https: https://www.youtube.com https://*.chatango.com; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.chatango.com https://www.youtube.com https://www.googleapis.com;">
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="unsafe-none">
+    <title>YTMovies - Modern Video Experience</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script type="module" src="sidebar.js" defer></script>
+</head>
+<body>
+    <!-- Support Tagline -->
+    <a href="https://punctuationbandycontradict.com/h1x2g8u8j?key=6c82ed892c435e884e00dc057d3f9291" target="_blank" class="support-tagline">
+        Click here to support this website
+    </a>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="#" class="logo-link">
+                <img src="images/logo.png" alt="YTMovies Logo" class="logo">
+            </a>
+            <h1 class="site-title">YTMovies</h1>
+        </div>
+        <div class="nav-middle">
+            <div class="search-box">
+                <input type="text" placeholder="Search">
+                <button class="voice-search-btn" title="Voice Search"><i class="fas fa-microphone"></i></button>
+                <button class="search-btn" title="Search"><i class="fas fa-search"></i></button>
+            </div>
+            <select id="region-select">
+                <option value="US">United States</option>
+                <option value="GB">United Kingdom</option>
+                <option value="CA">Canada</option>
+                <option value="AU">Australia</option>
+                <option value="PH">Philippines</option>
+            </select>
+        </div>
+        <div class="nav-right">
+            <button class="mobile-search-toggle hidden-desktop" id="mobile-search-toggle" title="Search">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="mobile-queue-toggle" id="mobile-queue-toggle">
+                <i class="fas fa-list"></i>
+                <span class="queue-badge" id="mobile-queue-badge">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="shortcut-links">
+                <a href="#" class="nav-link" data-page="home">
+                    <i class="material-icons">home</i>
+                    <p>Home</p>
+                </a>
+                <a href="#" class="nav-link" data-page="trending">
+                    <i class="material-icons">whatshot</i>
+                    <p>Trending</p>
+                </a>
+                <hr>
+            </div>
+            <div class="sidebar-images">
+                <a href="https://punctuationbandycontradict.com/jd6vnu83h?key=575aff11e1b517a329fa19c6ae439e58" target="_blank" class="sidebar-image-link">
+                    <img src="images/support.png" alt="Support" class="sidebar-image">
+                    <span>Support</span>
+                </a>
+                <a href="https://buymeacoffee.com/musikalangw" target="_blank" class="sidebar-image-link">
+                    <img src="images/coffee.png" alt="Buy Me a Coffee" class="sidebar-image">
+                    <span>Buy Me a Coffee</span>
+                </a>
+                <a href="https://mytube.space" target="_blank" class="sidebar-image-link">
+                    <img src="images/movies.png" alt="Movies" class="sidebar-image">
+                    <span>Movies</span>
+                </a>
+            </div>
+            <div class="sidebar-tiktok">
+                <p class="tiktok-tagline">Keep this site alive by shopping at my TikTok showcase — click the TikTok below!</p>
+                <a href="https://www.tiktok.com/@glowandcare1190" target="_blank" class="sidebar-image-link tiktok-link">
+                    <div class="tiktok-logo-wrapper">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <span>@glowandcare1190</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Video Queue Sidebar -->
+        <div class="video-queue-sidebar">
+            <div class="queue-sidebar-header">
+                <h3>Next Videos</h3>
+                <div class="queue-header-actions">
+                    <span id="sidebar-queue-count" class="sidebar-queue-count">0/7</span>
+                    <button id="hide-sidebar-btn" class="hide-sidebar-btn" title="Hide Sidebar">
+                        <i class="fas fa-eye-slash"></i>
+                    </button>
+                    <button id="clear-all-queue-btn" class="clear-all-btn" title="Clear All Videos">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Search Section -->
+            <div class="queue-search-section">
+                <div class="queue-search-input-group">
+                    <input type="text" id="sidebar-search-input" placeholder="Search next video..." class="sidebar-search-input">
+                    <button class="voice-search-btn sidebar-voice-btn" title="Voice Search"><i class="fas fa-microphone"></i></button>
+                    <button id="sidebar-search-btn" class="sidebar-search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div id="sidebar-search-results" class="sidebar-search-results hidden"></div>
+            </div>
+
+            <!-- Queue Display -->
+            <div class="sidebar-queue-container">
+                <div id="sidebar-video-queue" class="sidebar-video-queue">
+                    <div class="sidebar-queue-empty">
+                        <i class="fas fa-list-ul"></i>
+                        <p>No videos reserved</p>
+                        <small>Search and add videos to your queue</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Show Sidebar Toggle (only visible when sidebar is hidden) -->
+            <button id="show-sidebar-btn" class="show-sidebar-btn hidden" title="Show Next Videos Sidebar">
+                <i class="fas fa-list"></i>
+                <span>Next Videos</span>
+            </button>
+            
+            <!-- Main Video Grid -->
+            <div id="video-container" class="video-grid"></div>
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player -->
+    <div id="video-player-container" class="video-player-container hidden">
+        <div class="player-wrapper">
+            <div id="player"></div>
+            <div class="player-controls">
+                <div class="control-group">
+                    <button class="control-button play-pause">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <div class="forward-backward">
+                        <button class="control-button backward">
+                            <i class="fas fa-backward"></i>
+                        </button>
+                        <button class="control-button forward">
+                            <i class="fas fa-forward"></i>
+                        </button>
+                    </div>
+                    <div class="time-display">
+                        <span class="current-time">0:00</span> / <span class="total-time">0:00</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="control-group">
+                    <button class="control-button play-next-btn" title="Play Next Video in Queue" id="play-next-btn">
+                        <i class="fas fa-step-forward"></i>
+                        <span class="play-next-text">Next</span>
+                    </button>
+                    <button class="control-button autoplay-toggle" title="Toggle Autoplay">
+                        <i class="fas fa-toggle-off"></i>
+                        <span class="autoplay-text">Autoplay</span>
+                    </button>
+                    <div class="volume-control">
+                        <button class="control-button volume-toggle">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                    </div>
+                    <button class="control-button fullscreen">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+            <button id="back-to-home" class="back-btn">
+                <i class="material-icons">arrow_back</i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Search Overlay -->
+    <div id="search-overlay" class="search-overlay hidden">
+        <div class="search-overlay-content">
+            <div class="search-overlay-header">
+                <h3>Search & Reserve Videos</h3>
+                <button id="close-search-overlay" class="close-overlay-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-overlay-controls">
+                <div class="search-input-group">
+                    <input type="text" id="overlay-search-input" placeholder="Search for videos to reserve...">
+                    <button class="voice-search-btn overlay-voice-btn" title="Voice Search"><i class="fas fa-microphone"></i></button>
+                    <button id="overlay-search-btn" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="overlay-search-results" class="overlay-search-results hidden"></div>
+            
+            <!-- Mini Queue Display -->
+            <div class="mini-queue-section">
+                <div class="mini-queue-header">
+                    <h4>Reserved Videos</h4>
+                    <span id="mini-queue-count" class="mini-queue-count">0/7</span>
+                </div>
+                <div id="mini-video-queue" class="mini-video-queue">
+                    <div class="mini-queue-empty">
+                        <i class="fas fa-list-ul"></i>
+                        <p>No videos reserved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script type="module" src="config.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
