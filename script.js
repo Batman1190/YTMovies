@@ -382,7 +382,7 @@ function itemMatchesKaraokeOrVideoke(item) {
 }
 
 // YouTube API Functions
-async function fetchTrendingVideos(region = 'US') {
+async function fetchTrendingVideos(region = 'GB') {
     console.log('fetchTrendingVideos called with region:', region);
     try {
         const videoContainer = document.getElementById('video-container');
@@ -475,7 +475,7 @@ async function fetchTrendingVideos(region = 'US') {
 }
 
 // Fallback: fetch random pelikula/movie videos when trending has no strict matches
-async function fetchRandomKaraokeVideos(region = 'US') {
+async function fetchRandomKaraokeVideos(region = 'GB') {
     try {
         const videoContainer = document.getElementById('video-container');
         if (!videoContainer) return;
@@ -2862,7 +2862,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (page === 'home' || page === 'trending') {
                 // Get current region
                 const regionSelect = document.getElementById('region-select');
-                const selectedRegion = regionSelect ? regionSelect.value : 'US';
+                const selectedRegion = regionSelect ? regionSelect.value : 'GB';
                 
                 // Fetch trending videos for the current region
                 fetchTrendingVideos(selectedRegion);
