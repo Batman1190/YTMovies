@@ -2,9 +2,9 @@
 :root {
     --primary-color: #ffffff;
     --secondary-color: #b39ddb;
-    --background-color: #2d1b69;
-    --hover-color: #4a2c7a;
-    --border-color: #5e35b1;
+    --background-color: #0b3d2e;
+    --hover-color: #115c44;
+    --border-color: #1e6a52;
     --card-bg: rgba(255, 255, 255, 0.95);
     --accent-orange: #ff8c42;
     --accent-blue: #3498db;
@@ -15,9 +15,9 @@
     --error-red-light: #ff4444;
     --gray-medium: #6c757d;
     --gray-dark: #5a6268;
-    --violet-light: #4a2c7a;
-    --violet-medium: #5e35b1;
-    --violet-dark: #7b1fa2;
+    --violet-light: #115c44;
+    --violet-medium: #1e6a52;
+    --violet-dark: #2b7a5a;
 }
 
 /* Support Tagline */
