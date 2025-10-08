@@ -1701,12 +1701,33 @@ document.addEventListener('DOMContentLoaded', function() {
         videoQueueSidebar: !!videoQueueSidebar
     });
 
-    // Mobile menu toggle
+    // Mobile menu toggle (pointer-based, debounced)
+    let __mobileMenuToggleBusy = false;
+    let __lastMenuToggleAt = 0;
     if (mobileMenuToggle && sidebar) {
-        mobileMenuToggle.addEventListener('click', (e) => {
+        const handleMenuPointerUp = (e) => {
             try {
                 e.preventDefault();
+                e.stopPropagation();
+                if (__mobileMenuToggleBusy) return;
+                __mobileMenuToggleBusy = true;
+                __lastMenuToggleAt = Date.now();
+
+                const willOpen = !sidebar.classList.contains('active');
                 sidebar.classList.toggle('active');
+
+                // Manage shared overlay and body scroll
+                const overlay = document.getElementById('sidebar-overlay') || document.querySelector('.sidebar-overlay');
+                if (overlay) {
+                    if (willOpen) {
+                        overlay.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                }
+
                 // Close queue sidebar if open
                 if (videoQueueSidebar) {
                     videoQueueSidebar.classList.remove('active');
@@ -1714,8 +1735,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Mobile menu toggled');
             } catch (error) {
                 console.error('Error toggling mobile menu:', error);
+            } finally {
+                setTimeout(() => { __mobileMenuToggleBusy = false; }, 350);
             }
-        });
+        };
+        mobileMenuToggle.addEventListener('pointerup', handleMenuPointerUp, { passive: false });
     } else {
         console.warn('Mobile menu toggle or sidebar not found');
     }
@@ -1840,11 +1864,17 @@ document.addEventListener('DOMContentLoaded', function() {
         console.warn('Show sidebar button not found');
     }
 
-    // Close sidebars when clicking outside
+    // Close sidebars when clicking outside (ignore immediate clicks after toggling)
     document.addEventListener('click', (e) => {
         try {
+            if (__lastMenuToggleAt && Date.now() - __lastMenuToggleAt < 350) {
+                return; // avoid immediate close right after open
+            }
             if (sidebar && mobileMenuToggle && !sidebar.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
                 sidebar.classList.remove('active');
+                const overlay = document.getElementById('sidebar-overlay') || document.querySelector('.sidebar-overlay');
+                if (overlay) overlay.classList.remove('active');
+                document.body.style.overflow = '';
             }
             if (videoQueueSidebar && mobileQueueToggle && !videoQueueSidebar.contains(e.target) && !mobileQueueToggle.contains(e.target)) {
                 videoQueueSidebar.classList.remove('active');
