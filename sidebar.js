@@ -25,6 +25,27 @@ let isSidebarOpen = false;
 let isRightSidebarOpen = true; // desktop default visible
 let overlayTimeout = null;
 let resizeTimeout = null;
+let menuToggleLocked = false; // debounce guard for hamburger
+let queueToggleLocked = false; // debounce guard for queue toggle
+
+function debounceToggle(lockFlagName, fn, delay = 500) {
+    if (lockFlagName === 'menu' && menuToggleLocked) {
+        console.log('Menu toggle locked, ignoring');
+        return;
+    }
+    if (lockFlagName === 'queue' && queueToggleLocked) {
+        console.log('Queue toggle locked, ignoring');
+        return;
+    }
+    if (lockFlagName === 'menu') menuToggleLocked = true;
+    if (lockFlagName === 'queue') queueToggleLocked = true;
+    try { fn(); } finally {
+        setTimeout(() => {
+            if (lockFlagName === 'menu') menuToggleLocked = false;
+            if (lockFlagName === 'queue') queueToggleLocked = false;
+        }, delay);
+    }
+}
 
 // Toggle sidebar function
 function toggleSidebar() {
@@ -37,29 +58,39 @@ function toggleSidebar() {
             document.body.style.overflow = 'hidden';
             
             if (sidebar) sidebar.classList.add('active');
-            // Add overlay to prevent interaction with content
-            const overlay = document.createElement('div');
-            overlay.className = 'sidebar-overlay';
-            document.body.appendChild(overlay);
             
-            // Add active class after a small delay to allow for transition
-            requestAnimationFrame(() => {
-                overlay.classList.add('active');
-            });
+            // Check if overlay already exists to avoid duplicates
+            let overlay = document.querySelector('.sidebar-overlay');
+            if (!overlay) {
+                // Add overlay to prevent interaction with content
+                overlay = document.createElement('div');
+                overlay.className = 'sidebar-overlay';
+                document.body.appendChild(overlay);
+            }
             
-            overlay.addEventListener('click', () => {
-                toggleSidebar();
-            });
+            // Add active class after a delay to prevent immediate click-through
+            setTimeout(() => {
+                if (overlay) {
+                    overlay.classList.add('active');
+                    // Add click handler only after overlay is fully active
+                    overlay.onclick = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleSidebar();
+                    };
+                }
+            }, 100);
         } else {
             document.body.style.overflow = '';
             if (sidebar) sidebar.classList.remove('active');
             const overlay = document.querySelector('.sidebar-overlay');
             if (overlay) {
+                overlay.onclick = null; // Remove click handler first
                 overlay.classList.remove('active');
                 // Remove overlay after transition
                 clearTimeout(overlayTimeout);
                 overlayTimeout = setTimeout(() => {
-                    if (overlay.parentNode) {
+                    if (overlay && overlay.parentNode) {
                         document.body.removeChild(overlay);
                     }
                 }, 300);
@@ -80,27 +111,37 @@ function toggleSidebar() {
             updateVideoPlayerLayout();
         }
         
-        // Handle text visibility in sidebar links
-        document.querySelectorAll('.nav-link span, .sidebar-image-link span').forEach(span => {
-            span.style.display = isSidebarOpen ? 'block' : 'none';
-        });
+        // Handle text visibility in sidebar links (handled by CSS)
     }
 }
 
 // Event Listeners
 if (menuIcon) {
-    // Add multiple event listeners for better mobile compatibility
-    menuIcon.addEventListener('click', toggleSidebar);
-    menuIcon.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        toggleSidebar();
-    });
-    menuIcon.addEventListener('touchend', (e) => {
-        e.preventDefault();
-    });
+    // Use click event for better mobile compatibility
+    const handleMenuToggle = (e) => {
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch (_) {}
+        debounceToggle('menu', toggleSidebar);
+    };
+    
+    // Remove any existing event listeners to prevent duplicates
+    menuIcon.removeEventListener('click', handleMenuToggle);
+    menuIcon.removeEventListener('pointerup', handleMenuToggle);
+    
+    // Add click event for mobile compatibility
+    menuIcon.addEventListener('click', handleMenuToggle, { passive: false });
+    
+    // Make sure the menu icon is properly interactive
+    menuIcon.style.pointerEvents = 'auto';
+    menuIcon.style.touchAction = 'manipulation';
+    menuIcon.style.userSelect = 'none';
+    menuIcon.style.zIndex = '10000';
+    menuIcon.style.position = 'relative';
 }
 
-// Right Sidebar (Queue) - Mobile toggle
+// Right Sidebar (Queue) - Mobile functions
 function openRightSidebarMobile() {
     console.log('openRightSidebarMobile called');
     if (!videoQueueSidebar) {
@@ -163,60 +204,25 @@ if (mobileQueueToggle) {
     console.log('Button element:', mobileQueueToggle);
     console.log('Button styles:', window.getComputedStyle(mobileQueueToggle));
     
-    // Add multiple event listeners for better mobile compatibility
-    mobileQueueToggle.addEventListener('click', (e) => {
-        console.log('Mobile queue toggle clicked');
-        e.preventDefault();
-        e.stopPropagation();
-        toggleRightSidebarMobile();
-    });
-    
-    mobileQueueToggle.addEventListener('touchstart', (e) => {
-        console.log('Mobile queue toggle touchstart');
-        e.preventDefault();
-        e.stopPropagation();
-        toggleRightSidebarMobile();
-    });
-    
-    mobileQueueToggle.addEventListener('touchend', (e) => {
-        console.log('Mobile queue toggle touchend');
-        e.preventDefault();
-        e.stopPropagation();
-    });
-    
-    // Add mousedown as backup for mobile
-    mobileQueueToggle.addEventListener('mousedown', (e) => {
-        console.log('Mobile queue toggle mousedown');
-        e.preventDefault();
-        e.stopPropagation();
-        toggleRightSidebarMobile();
-    });
-    
+    // Simplify to one pointer-based handler to avoid duplicate toggles
+    const handleQueueToggle = (e) => {
+        console.log('Mobile queue toggle pointerup');
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch (_) {}
+        debounceToggle('queue', toggleRightSidebarMobile);
+    };
+    mobileQueueToggle.addEventListener('pointerup', handleQueueToggle, { passive: false });
+
     // Force the button to be interactive
     mobileQueueToggle.style.pointerEvents = 'auto';
     mobileQueueToggle.style.touchAction = 'manipulation';
     mobileQueueToggle.style.userSelect = 'none';
     mobileQueueToggle.style.zIndex = '10000';
     mobileQueueToggle.style.position = 'relative';
-    
-    // Add a direct onclick handler as ultimate fallback
-    mobileQueueToggle.onclick = function(e) {
-        console.log('Direct onclick handler triggered');
-        e.preventDefault();
-        e.stopPropagation();
-        toggleRightSidebarMobile();
-        return false;
-    };
-    
-    // Add pointerup as a robust cross-device fallback
-    mobileQueueToggle.addEventListener('pointerup', (e) => {
-        console.log('Mobile queue toggle pointerup');
-        try {
-            e.preventDefault();
-            e.stopPropagation();
-        } catch (_) {}
-        toggleRightSidebarMobile();
-    }, { passive: false });
+    // Remove any inline onclick to avoid duplicate handlers
+    mobileQueueToggle.onclick = null;
     
 } else {
     console.log('mobileQueueToggle not found');
