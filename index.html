@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover, shrink-to-fit=no">
+    <meta name="format-detection" content="telephone=no, address=no, email=no">
     <!-- Desktop View Toggle -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,6 +25,9 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.google.com https://*.doubleclick.net https://*.chatango.com http://localhost:* ws://localhost:*; frame-src 'self' https: https://www.youtube.com https://*.chatango.com; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.chatango.com https://www.youtube.com https://www.googleapis.com;">
     <meta http-equiv="Cross-Origin-Opener-Policy" content="unsafe-none">
     <title>YTMovies - Modern Video Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -40,11 +44,11 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-left">
-            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Open menu">
                 <i class="fas fa-bars"></i>
             </button>
             <a href="#" class="logo-link">
-                <img src="images/logo.png" alt="YTMovies Logo" class="logo">
+                <img src="images/logo.png" alt="YTMovies Logo" class="logo" loading="lazy" decoding="async">
             </a>
             <h1 class="site-title">YTMovies</h1>
         </div>
@@ -63,10 +67,10 @@
             </select>
         </div>
         <div class="nav-right">
-            <button class="mobile-search-toggle hidden-desktop" id="mobile-search-toggle" title="Search">
+            <button class="mobile-search-toggle hidden-desktop" id="mobile-search-toggle" title="Search" aria-label="Open search">
                 <i class="fas fa-search"></i>
             </button>
-            <button class="mobile-queue-toggle" id="mobile-queue-toggle">
+            <button class="mobile-queue-toggle" id="mobile-queue-toggle" aria-label="Open queue">
                 <i class="fas fa-list"></i>
                 <span class="queue-badge" id="mobile-queue-badge">0</span>
             </button>
