@@ -2403,12 +2403,13 @@ body {
     .sidebar {
         width: 250px;
         transform: translateX(-100%);
-        transition: none;
+        transition: transform 0.3s ease;
         position: fixed;
         top: 56px;
         left: 0;
         height: calc(100vh - 56px);
         z-index: 1000;
+        will-change: transform;
     }
     
     .sidebar.active {
