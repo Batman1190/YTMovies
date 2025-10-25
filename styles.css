@@ -1967,15 +1967,30 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-    padding: 10px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
     transition: opacity 0.3s ease;
     z-index: 10;
     /* Allow clicks to pass through the overlay except on actual controls */
     pointer-events: none;
+}
+
+.progress-bar-container {
+    width: 100%;
+    padding: 8px 15px 4px 15px;
+    pointer-events: auto;
+}
+
+.controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 15px;
+    gap: 15px;
 }
 
 .controls-top {
@@ -2208,21 +2223,19 @@ body {
 }
 
 .progress-bar {
-    flex: 1;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 2px;
     cursor: pointer;
     position: relative;
-    margin: 0 10px;
-    /* Keep some space on the right so YouTube's Skip Ads stays clickable */
-    margin-right: 160px;
+    margin: 0;
     pointer-events: auto;
     transition: height 0.2s ease;
 }
 
 .progress-bar:hover {
-    height: 6px;
+    height: 8px;
 }
 
 .progress-bar-fill {
@@ -2244,15 +2257,18 @@ body {
     height: 14px;
     background: #ff0000;
     border-radius: 50%;
-    opacity: 0;
-    transition: opacity 0.2s ease;
+    opacity: 0.7;
+    transition: all 0.2s ease;
     pointer-events: none;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    z-index: 2;
 }
 
 .progress-bar:hover .progress-bar-scrubber,
 .progress-bar.dragging .progress-bar-scrubber {
     opacity: 1;
+    width: 16px;
+    height: 16px;
 }
 
 .progress-bar-tooltip {
@@ -2323,9 +2339,21 @@ body {
         min-width: 80px;
     }
 
+    .progress-bar-container {
+        padding: 6px 10px 3px 10px;
+    }
+
     .progress-bar {
-        height: 3px;
-        margin: 0 5px;
+        height: 5px;
+    }
+
+    .progress-bar:hover {
+        height: 6px;
+    }
+
+    .controls-row {
+        padding: 6px 10px;
+        gap: 8px;
     }
 
     .controls-bottom {

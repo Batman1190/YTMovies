@@ -180,28 +180,31 @@
         <div class="player-wrapper">
             <div id="player"></div>
             <div class="player-controls">
-                <div class="control-group">
-                    <button class="control-button play-pause">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <div class="forward-backward">
-                        <button class="control-button backward">
-                            <i class="fas fa-backward"></i>
-                        </button>
-                        <button class="control-button forward">
-                            <i class="fas fa-forward"></i>
-                        </button>
-                    </div>
-                    <div class="time-display">
-                        <span class="current-time">0:00</span> / <span class="total-time">0:00</span>
+                <div class="progress-bar-container">
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill"></div>
+                        <div class="progress-bar-scrubber"></div>
+                        <div class="progress-bar-tooltip">0:00</div>
                     </div>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-bar-fill"></div>
-                    <div class="progress-bar-scrubber"></div>
-                    <div class="progress-bar-tooltip">0:00</div>
-                </div>
-                <div class="control-group">
+                <div class="controls-row">
+                    <div class="control-group">
+                        <button class="control-button play-pause">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="forward-backward">
+                            <button class="control-button backward">
+                                <i class="fas fa-backward"></i>
+                            </button>
+                            <button class="control-button forward">
+                                <i class="fas fa-forward"></i>
+                            </button>
+                        </div>
+                        <div class="time-display">
+                            <span class="current-time">0:00</span> / <span class="total-time">0:00</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
                     <button class="control-button play-next-btn" title="Play Next Video in Queue" id="play-next-btn">
                         <i class="fas fa-step-forward"></i>
                         <span class="play-next-text">Next</span>
@@ -230,6 +233,7 @@
                     <button class="control-button fullscreen">
                         <i class="fas fa-expand"></i>
                     </button>
+                    </div>
                 </div>
             </div>
             <button id="back-to-home" class="back-btn">
