@@ -2147,6 +2147,11 @@ body {
     /* Keep some space on the right so YouTube's Skip Ads stays clickable */
     margin-right: 160px;
     pointer-events: auto;
+    transition: height 0.2s ease;
+}
+
+.progress-bar:hover {
+    height: 6px;
 }
 
 .progress-bar-fill {
@@ -2157,6 +2162,47 @@ body {
     background: #ff0000;
     border-radius: 2px;
     transition: width 0.1s linear;
+    pointer-events: none;
+}
+
+.progress-bar-scrubber {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px;
+    height: 14px;
+    background: #ff0000;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.progress-bar:hover .progress-bar-scrubber,
+.progress-bar.dragging .progress-bar-scrubber {
+    opacity: 1;
+}
+
+.progress-bar-tooltip {
+    position: absolute;
+    bottom: 120%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.progress-bar:hover .progress-bar-tooltip,
+.progress-bar.dragging .progress-bar-tooltip {
+    opacity: 1;
 }
 
 .time-display {

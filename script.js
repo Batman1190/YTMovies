@@ -2404,11 +2404,89 @@ function initializePlayerControls() {
         }
     });
 
-    // Progress Bar
-    progressBar.addEventListener('click', (e) => {
+    // Progress Bar - Enhanced with drag functionality
+    const progressBarFill = document.querySelector('.progress-bar-fill');
+    const progressBarScrubber = document.querySelector('.progress-bar-scrubber');
+    const progressBarTooltip = document.querySelector('.progress-bar-tooltip');
+    let isDragging = false;
+
+    function updateProgressBarPosition(e) {
         const rect = progressBar.getBoundingClientRect();
-        const pos = (e.clientX - rect.left) / rect.width;
-        player.seekTo(pos * player.getDuration(), true);
+        let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        const duration = player.getDuration();
+        const time = pos * duration;
+        
+        // Update scrubber position
+        progressBarScrubber.style.left = `${pos * 100}%`;
+        
+        // Update tooltip position and text
+        progressBarTooltip.style.left = `${pos * 100}%`;
+        progressBarTooltip.textContent = formatTime(time);
+        
+        return { pos, time };
+    }
+
+    function seekToPosition(e) {
+        const { pos, time } = updateProgressBarPosition(e);
+        player.seekTo(time, true);
+    }
+
+    // Click to seek
+    progressBar.addEventListener('click', (e) => {
+        if (!isDragging) {
+            seekToPosition(e);
+        }
+    });
+
+    // Mouse down - start dragging
+    progressBar.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        progressBar.classList.add('dragging');
+        seekToPosition(e);
+    });
+
+    // Mouse move - show preview and drag
+    progressBar.addEventListener('mousemove', (e) => {
+        updateProgressBarPosition(e);
+        if (isDragging) {
+            seekToPosition(e);
+        }
+    });
+
+    // Mouse up - stop dragging
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            progressBar.classList.remove('dragging');
+        }
+    });
+
+    // Mouse leave - keep tooltip visible if dragging
+    progressBar.addEventListener('mouseleave', () => {
+        if (!isDragging) {
+            progressBarScrubber.style.left = '';
+            progressBarTooltip.style.left = '';
+        }
+    });
+
+    // Touch support for mobile
+    progressBar.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        progressBar.classList.add('dragging');
+        seekToPosition(e);
+    });
+
+    progressBar.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (isDragging) {
+            seekToPosition(e);
+        }
+    });
+
+    progressBar.addEventListener('touchend', () => {
+        isDragging = false;
+        progressBar.classList.remove('dragging');
     });
 
     // Fullscreen
@@ -2468,16 +2546,19 @@ function initializePlayerControls() {
 
     // Update time display
     setInterval(() => {
-        if (player && player.getCurrentTime) {
+        if (player && player.getCurrentTime && !isDragging) {
             const currentTime = player.getCurrentTime();
             const duration = player.getDuration();
             
             currentTimeDisplay.textContent = formatTime(currentTime);
             totalTimeDisplay.textContent = formatTime(duration);
             
-            // Update progress bar
+            // Update progress bar and scrubber
             const progress = (currentTime / duration) * 100;
             document.querySelector('.progress-bar-fill').style.width = `${progress}%`;
+            if (progressBarScrubber) {
+                progressBarScrubber.style.left = `${progress}%`;
+            }
         }
     }, 1000);
 }
