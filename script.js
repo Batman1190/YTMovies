@@ -2390,14 +2390,24 @@ function initializePlayerControls() {
     });
 
     // Volume Control
-    volumeToggle.addEventListener('click', () => {
+    volumeToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         appState.userInteracted = true;
+        
         if (currentVolume > 0) {
+            // Mute
+            if (player && player.mute) {
+                player.mute();
+            }
             player.setVolume(0);
             currentVolume = 0;
             volumeToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
         } else {
-            if (player && player.unMute) player.unMute();
+            // Unmute
+            if (player && player.unMute) {
+                player.unMute();
+            }
             player.setVolume(100);
             currentVolume = 1;
             volumeToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
@@ -2552,6 +2562,7 @@ function initializePlayerControls() {
     if (qualityToggle && qualityMenu) {
         // Toggle quality menu
         qualityToggle.addEventListener('click', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             qualityMenu.classList.toggle('hidden');
             updateQualityMenu();
@@ -2566,6 +2577,8 @@ function initializePlayerControls() {
 
         // Handle quality selection
         qualityMenu.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             const menuItem = e.target.closest('.quality-menu-item');
             if (menuItem) {
                 const quality = menuItem.dataset.quality;
