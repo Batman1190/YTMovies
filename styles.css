@@ -83,7 +83,8 @@ iframe {
 }
 
 body {
-    background: var(--background-color);
+    background: linear-gradient(135deg, #0b3d2e 0%, #4a90a4 100%);
+    background-attachment: fixed;
     color: var(--primary-color);
     font-size: 16px;
     line-height: 1.5;
@@ -2053,6 +2054,76 @@ body {
     color: var(--primary-color);
 }
 
+/* Quality control styles */
+.quality-control {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.quality-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+}
+
+.quality-toggle .quality-text {
+    font-size: 12px;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.quality-menu {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    background: rgba(28, 28, 28, 0.98);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 120px;
+    margin-bottom: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.quality-menu.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+}
+
+.quality-menu-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    font-size: 14px;
+}
+
+.quality-menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.quality-menu-item.active {
+    color: var(--accent-orange);
+}
+
+.quality-menu-item i {
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.quality-menu-item i.hidden {
+    display: none;
+}
+
 /* Player search container */
 .player-search-container {
     display: flex !important;
@@ -2229,6 +2300,18 @@ body {
     .control-button {
         padding: 6px;
         font-size: 14px;
+    }
+
+    .quality-toggle .quality-text,
+    .autoplay-toggle .autoplay-text {
+        display: none;
+    }
+
+    .quality-menu {
+        min-width: 100px;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .play-pause {

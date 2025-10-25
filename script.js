@@ -2544,6 +2544,37 @@ function initializePlayerControls() {
         });
     }
 
+    // Quality control
+    const qualityToggle = document.querySelector('.quality-toggle');
+    const qualityMenu = document.querySelector('.quality-menu');
+    const qualityText = document.querySelector('.quality-text');
+    
+    if (qualityToggle && qualityMenu) {
+        // Toggle quality menu
+        qualityToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            qualityMenu.classList.toggle('hidden');
+            updateQualityMenu();
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!qualityToggle.contains(e.target) && !qualityMenu.contains(e.target)) {
+                qualityMenu.classList.add('hidden');
+            }
+        });
+
+        // Handle quality selection
+        qualityMenu.addEventListener('click', (e) => {
+            const menuItem = e.target.closest('.quality-menu-item');
+            if (menuItem) {
+                const quality = menuItem.dataset.quality;
+                changeQuality(quality);
+                qualityMenu.classList.add('hidden');
+            }
+        });
+    }
+
     // Update time display
     setInterval(() => {
         if (player && player.getCurrentTime && !isDragging) {
@@ -2567,6 +2598,96 @@ function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     seconds = Math.floor(seconds % 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// Quality control functions
+function updateQualityMenu() {
+    if (!player || !player.getAvailableQualityLevels) return;
+    
+    const qualityMenu = document.querySelector('.quality-menu');
+    const qualityText = document.querySelector('.quality-text');
+    if (!qualityMenu) return;
+
+    // Get available quality levels from YouTube API
+    const availableQualities = player.getAvailableQualityLevels();
+    const currentQuality = player.getPlaybackQuality();
+    
+    // Quality labels mapping
+    const qualityLabels = {
+        'auto': 'Auto',
+        'highres': '4K',
+        'hd2160': '4K',
+        'hd1440': '1440p',
+        'hd1080': '1080p',
+        'hd720': '720p',
+        'large': '480p',
+        'medium': '360p',
+        'small': '240p',
+        'tiny': '144p'
+    };
+
+    // Clear existing menu items except the auto option
+    qualityMenu.innerHTML = '<div class="quality-menu-item" data-quality="auto"><span>Auto</span><i class="fas fa-check hidden"></i></div>';
+
+    // Add available qualities
+    availableQualities.forEach(quality => {
+        const label = qualityLabels[quality] || quality;
+        const menuItem = document.createElement('div');
+        menuItem.className = 'quality-menu-item';
+        menuItem.dataset.quality = quality;
+        menuItem.innerHTML = `<span>${label}</span><i class="fas fa-check hidden"></i>`;
+        qualityMenu.appendChild(menuItem);
+    });
+
+    // Mark current quality as active
+    const allItems = qualityMenu.querySelectorAll('.quality-menu-item');
+    allItems.forEach(item => {
+        const itemQuality = item.dataset.quality;
+        const checkIcon = item.querySelector('i');
+        
+        if (itemQuality === 'auto' && currentQuality === 'default') {
+            item.classList.add('active');
+            checkIcon.classList.remove('hidden');
+            if (qualityText) qualityText.textContent = 'Auto';
+        } else if (itemQuality === currentQuality) {
+            item.classList.add('active');
+            checkIcon.classList.remove('hidden');
+            if (qualityText) qualityText.textContent = qualityLabels[currentQuality] || currentQuality;
+        } else {
+            item.classList.remove('active');
+            checkIcon.classList.add('hidden');
+        }
+    });
+}
+
+function changeQuality(quality) {
+    if (!player || !player.setPlaybackQualityRange) return;
+    
+    const qualityText = document.querySelector('.quality-text');
+    const qualityLabels = {
+        'auto': 'Auto',
+        'highres': '4K',
+        'hd2160': '4K',
+        'hd1440': '1440p',
+        'hd1080': '1080p',
+        'hd720': '720p',
+        'large': '480p',
+        'medium': '360p',
+        'small': '240p',
+        'tiny': '144p'
+    };
+
+    if (quality === 'auto') {
+        // Set to default (auto) quality
+        player.setPlaybackQualityRange('default');
+        if (qualityText) qualityText.textContent = 'Auto';
+    } else {
+        // Set specific quality
+        player.setPlaybackQuality(quality);
+        if (qualityText) qualityText.textContent = qualityLabels[quality] || quality;
+    }
+
+    console.log('Quality changed to:', quality);
 }
 
 // Initialize YouTube Player
